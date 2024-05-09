@@ -1,6 +1,8 @@
 /* tunable vars */
 int r_len = 36;
 int fr = 10;
+double slow_factor = 0.001;
+double starting_angle = 5;
 
 /* global vars */
 double da = 0;
@@ -67,14 +69,14 @@ void draw() {
     rollRoulette();
   } else {
       drawButton();
-    drawRoulette(0);
+    drawRoulette(starting_angle);
   }
 }
 
 
 void rollRoulette() {
   double angleIncrement = das * (360.0 / fr);
-  double totalAngle = angleIncrement * frameCount;
+  double totalAngle = angleIncrement * frameCount + starting_angle;
   drawRoulette(totalAngle);
   if (frameCount >= rollDuration) {
     rolling = false;
@@ -100,6 +102,7 @@ void drawRoulette(double angle) {
       pline(l2[0], l2[c]);
     }
   }
+    drawTriangle();
 }
 
 
@@ -120,3 +123,7 @@ void drawButton() {
   textAlign(CENTER, CENTER);
   text("Roll Roulette", width / 2, height - buttonHeight / 2);
 }
+
+ void drawTriangle() {
+ triangle(490, 340, 510, 340, 500, 360);
+ }
