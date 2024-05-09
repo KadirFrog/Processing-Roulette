@@ -1,5 +1,8 @@
+/* tunable vars */
 int r_len = 36;
 int fr = 10;
+
+/* global vars */
 double da = 0;
 double das;
 
