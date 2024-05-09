@@ -40,10 +40,13 @@ background(255);
 
 void setup() {
   size(1000, 1000);
-  frameRate(30);
+  frameRate(fr);
   cc();
-  Pos[] l1 = circle_coords(500, 500, 100, r_len, 0);
-  Pos[] l2 = circle_coords(500, 500, 150, r_len, 0);
+  double da = 0;
+  double das = 100 / fr;
+  while (true) {
+  Pos[] l1 = circle_coords(500, 500, 100, r_len, da);
+  Pos[] l2 = circle_coords(500, 500, 150, r_len, da);
   for (int c = 0; c < r_len; c++) {
     pline(l1[c], l2[c]);
     /* //draw circles
@@ -58,6 +61,12 @@ void setup() {
     pline(l2[0], l2[c]);
     }
   }
-  delay(2000);
+  delay(1000 / fr);
   cc();
+  if (da + das <= 360) {
+    da = da + das;
+    } else {
+    da = das - (360 - da);
+    }
+  }
 }
