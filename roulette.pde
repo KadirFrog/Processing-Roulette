@@ -71,9 +71,5 @@ void draw() {
       pline(l2[0], l2[c]);
     }
   }
-  
   da += das;
-  if (da >= 360) {
-    da -= 360;
-  }
 }
