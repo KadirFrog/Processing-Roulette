@@ -1,5 +1,7 @@
 int r_len = 36;
-int fr = 30;
+int fr = 10;
+double da = 0;
+double das;
 
 public class Pos {
   public double x, y;
@@ -42,31 +44,36 @@ void setup() {
   size(1000, 1000);
   frameRate(fr);
   cc();
-  double da = 0;
-  double das = 100 / fr;
-  while (true) {
+  das = 360.0 / fr;
+  strokeWeight(3);
+}
+
+int getLineColor(int index) {
+  return (index % 2 == 0) ? color(255, 0, 0) : color(0, 0, 255);
+}
+
+void draw() {
+  cc();
+  
   Pos[] l1 = circle_coords(500, 500, 100, r_len, da);
   Pos[] l2 = circle_coords(500, 500, 150, r_len, da);
+  
   for (int c = 0; c < r_len; c++) {
+    stroke(color(0, 0, 0));
     pline(l1[c], l2[c]);
-    /* //draw circles
-    pcircle(l1[c], 10);
-    pcircle(l2[c], 20);
-    */
     if (c != r_len - 1) {
+      stroke(getLineColor(c));
       pline(l1[c], l1[c + 1]);
       pline(l2[c], l2[c + 1]);
     } else {
-    pline(l1[0], l1[c]);
-    pline(l2[0], l2[c]);
+      stroke(getLineColor(c));
+      pline(l1[0], l1[c]);
+      pline(l2[0], l2[c]);
     }
   }
-  delay(1000 / fr);
-  cc();
-  if (da + das <= 360) {
-    da = da + das;
-    } else {
-    da = das - (360 - da);
-    }
+  
+  da += das;
+  if (da >= 360) {
+    da -= 360;
   }
 }
