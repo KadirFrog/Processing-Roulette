@@ -5,6 +5,10 @@ int fr = 10;
 /* global vars */
 double da = 0;
 double das;
+boolean rolling = false;
+int buttonWidth = 200;
+int buttonHeight = 100;
+int rollDuration = 60;
 
 public class Pos {
   public double x, y;
@@ -57,7 +61,27 @@ int getLineColor(int index) {
 
 void draw() {
   cc();
-  
+  if (rolling) {
+    rollRoulette();
+  } else {
+      drawButton();
+    drawRoulette();
+  }
+}
+
+
+void rollRoulette() {
+  for (int i = 0; i < rollDuration; i++) {
+    drawRoulette();
+    da += das;
+    if (da >= 360) {
+      da -= 360;
+    }
+  }
+  rolling = false;
+}
+
+void drawRoulette() {
   Pos[] l1 = circle_coords(500, 500, 100, r_len, da);
   Pos[] l2 = circle_coords(500, 500, 150, r_len, da);
   
@@ -74,5 +98,20 @@ void draw() {
       pline(l2[0], l2[c]);
     }
   }
-  da += das;
+}
+
+void mousePressed() {
+  if (mouseX > 400 && mouseX < 600 && mouseY > 800 && mouseY < 900) {
+    rolling = true;
+    print("1");
+  }
+}
+
+void drawButton() {
+  fill(200);
+  rect((width - buttonWidth) / 2, height - buttonHeight, buttonWidth, buttonHeight);
+  fill(0);
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  text("Roll Roulette", width / 2, height - buttonHeight / 2);
 }
