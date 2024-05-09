@@ -1,3 +1,8 @@
+/* imports */
+import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
+
 /* tunable vars */
 int r_len = 36;
 int fr = 10;
@@ -5,14 +10,26 @@ double slow_factor = 0.001;
 double starting_angle = 5;
 
 /* global vars */
+boolean rolld = false;
+int g;
 double da = 0;
 double das;
 boolean rolling = false;
 int buttonWidth = 200;
 int buttonHeight = 100;
-
-/* temp vars */
+Random random = new Random();
+int min = 100;
+int max = 200;
 int rollDuration = 50;
+public final List<Integer> BLACK_NUMBERS = Arrays.asList(
+    2, 4, 6, 8, 10, 11, 13, 15, 17,
+    20, 22, 24, 26, 28, 29, 31, 33, 35
+);
+public final List<Integer> RED_NUMBERS = Arrays.asList(
+    1, 3, 5, 7, 9, 12, 14, 16, 18,
+    19, 21, 23, 25, 27, 30, 32, 34, 36
+);
+int r_b, r_r;
 
 public class Pos {
   public double x, y;
@@ -59,13 +76,22 @@ void setup() {
   strokeWeight(3);
 }
 
-int getLineColor(int index) {
-  return (index % 2 == 0) ? color(255, 0, 0) : color(0, 0, 255);
+int getLineColor(int index, int gamble) {
+  if (rolling) {
+  return ((index) % 2 == 0) ? color(255, 0, 0) : color(0, 0, 255);
+  }
+  return ((index + gamble) % 2 == 0) ? color(255, 0, 0) : color(0, 0, 255);
 }
 
 void draw() {
   cc();
+  
+  rollDuration = random.nextInt(max - min + 1) + min;
   if (rolling) {
+    rolld = true;
+    g = random.nextInt(1 - 0 + 1) + 0;
+    r_b = BLACK_NUMBERS.get(random.nextInt(BLACK_NUMBERS.size()));
+    r_r = RED_NUMBERS.get(random.nextInt(RED_NUMBERS.size()));
     rollRoulette();
   } else {
       drawButton();
@@ -93,11 +119,11 @@ void drawRoulette(double angle) {
     stroke(color(0, 0, 0));
     pline(l1[c], l2[c]);
     if (c != r_len - 1) {
-      stroke(getLineColor(c));
+      stroke(getLineColor(c, g));
       pline(l1[c], l1[c + 1]);
       pline(l2[c], l2[c + 1]);
     } else {
-      stroke(getLineColor(c));
+      stroke(getLineColor(c, g));
       pline(l1[0], l1[c]);
       pline(l2[0], l2[c]);
     }
@@ -110,7 +136,6 @@ void mousePressed() {
   if (mouseX > (width - buttonWidth) / 2 && mouseX < (width + buttonWidth) / 2 &&
       mouseY > height - buttonHeight && mouseY < height) {
     rolling = true;
-    println("Rolling Roulette...");
   }
 }
 
@@ -121,7 +146,11 @@ void drawButton() {
   fill(0);
   textSize(20);
   textAlign(CENTER, CENTER);
-  text("Roll Roulette", width / 2, height - buttonHeight / 2);
+  String text = "Roll Roulette";
+  if (rolld) {
+  text = ((g == 1) ? "Blue wins: " + r_b : "Red wins: " + r_r);
+  }
+  text(text, width / 2, height - buttonHeight / 2);
 }
 
  void drawTriangle() {
