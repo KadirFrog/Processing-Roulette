@@ -139,16 +139,23 @@ void mousePressed() {
   }
 }
 
+String sfill(boolean r) {
+if (r) {
+fill(color(255, 0, 0));
+} else {
+fill(color(0, 0, 255));}
+return "";
+}
 
 void drawButton() {
   fill(200);
   rect((width - buttonWidth) / 2, height - buttonHeight, buttonWidth, buttonHeight);
-  fill(0);
   textSize(20);
   textAlign(CENTER, CENTER);
   String text = "Roll Roulette";
-  if (rolld) {
-  text = ((g == 1) ? "Blue wins: " + r_b : "Red wins: " + r_r);
+  fill(0);
+  if (rolld) {  
+  text = ((g == 1) ? "Blue wins: " + r_b + sfill(false): "Red wins: " + r_r + sfill(true));
   }
   text(text, width / 2, height - buttonHeight / 2);
 }
