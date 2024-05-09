@@ -8,7 +8,9 @@ double das;
 boolean rolling = false;
 int buttonWidth = 200;
 int buttonHeight = 100;
-int rollDuration = 60;
+
+/* temp vars */
+int rollDuration = 1000;
 
 public class Pos {
   public double x, y;
@@ -65,25 +67,24 @@ void draw() {
     rollRoulette();
   } else {
       drawButton();
-    drawRoulette();
+    drawRoulette(0);
   }
 }
 
 
 void rollRoulette() {
-  for (int i = 0; i < rollDuration; i++) {
-    drawRoulette();
-    da += das;
-    if (da >= 360) {
-      da -= 360;
-    }
+  double angleIncrement = das * (360.0 / fr);
+  double totalAngle = angleIncrement * frameCount;
+  drawRoulette(totalAngle);
+  if (frameCount >= rollDuration) {
+    rolling = false;
+    frameCount = 0;
   }
-  rolling = false;
 }
 
-void drawRoulette() {
-  Pos[] l1 = circle_coords(500, 500, 100, r_len, da);
-  Pos[] l2 = circle_coords(500, 500, 150, r_len, da);
+void drawRoulette(double angle) {
+  Pos[] l1 = circle_coords(500, 500, 100, r_len, angle);
+  Pos[] l2 = circle_coords(500, 500, 150, r_len, angle);
   
   for (int c = 0; c < r_len; c++) {
     stroke(color(0, 0, 0));
@@ -100,12 +101,15 @@ void drawRoulette() {
   }
 }
 
+
 void mousePressed() {
-  if (mouseX > 400 && mouseX < 600 && mouseY > 800 && mouseY < 900) {
+  if (mouseX > (width - buttonWidth) / 2 && mouseX < (width + buttonWidth) / 2 &&
+      mouseY > height - buttonHeight && mouseY < height) {
     rolling = true;
-    print("1");
+    println("Rolling Roulette...");
   }
 }
+
 
 void drawButton() {
   fill(200);
