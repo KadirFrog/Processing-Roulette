@@ -10,7 +10,7 @@ int buttonWidth = 200;
 int buttonHeight = 100;
 
 /* temp vars */
-int rollDuration = 1000;
+int rollDuration = 50;
 
 public class Pos {
   public double x, y;
@@ -80,6 +80,7 @@ void rollRoulette() {
     rolling = false;
     frameCount = 0;
   }
+  frameCount++;
 }
 
 void drawRoulette(double angle) {
